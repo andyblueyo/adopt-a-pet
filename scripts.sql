@@ -4,10 +4,21 @@
 -- 1 user-defined functions to enforce the each of business rule defined above (3 total)
 -- 3 computed columns
 
+USE AdoptAPet
+GO
+
 --****************INSERT STATMENTS****************
--- Insert 8 to 10 rows into lookup tables: Measurement, Supplier_Type, Employee_Type,
+-- Insert rows into lookup tables: Measurement, Supplier_Type, Employee_Type, 
 -- Employee_Position, Medication_Type, Breed, Animal_Type, ect.
 
+-- Inserts into Measurement
+INSERT INTO MEASUREMENT (MeasurementName, MeasurementDesc) VALUES ('Height', 'Height of the animal from front paw to top of the head')
+INSERT INTO MEASUREMENT (MeasurementName, MeasurementDesc) VALUES ('Weight', 'Weight of the animal in lbs')
+INSERT INTO MEASUREMENT (MeasurementName, MeasurementDesc) VALUES ('Length', 'Length of the animal from front nose to tip of tail')
+GO
+
+--Inserts into Supplier_Type
+INSERT INTO SUPPLIER_TYPE (
 
 
 --*****************STORED PROCEDURES*****************
