@@ -5,7 +5,7 @@
 -- 3 computed columns
 
 --****************INSERT STATMENTS****************
--- Insert 8 to 10 rows into lookup tables: Measurement, Supplier_Type, Employee_Type, 
+-- Insert 8 to 10 rows into lookup tables: Measurement, Supplier_Type, Employee_Type,
 -- Employee_Position, Medication_Type, Breed, Animal_Type, ect.
 
 
@@ -21,61 +21,57 @@
 
 -- 1. Adopt-A-Pet will only accept cats and dogs, no other animals
 
-CREATE FUNCTION OnlyCatsAndDogs (@AnimalTypeName VARCHAR(50))
+CREATE FUNCTION OnlyCatsAndDogs()
 RETURNS INT
 AS
 BEGIN
-  DECLARE @RET INT
-    SET @RET = (SELECT CASE WHEN @AnimalTypeName = 'Dog'
-                  OR @AnimalTypeName = 'Cat'
-                  THEN 0 ELSE 1 END)
-    FROM ANIMAL_TYPE
-    WHERE AnimalTypeName = @AnimalTypeName
-  RETURN @RET
+   DECLARE @RET INT = 0
+   IF EXISTS (SELECT AnimalTypeName FROM Animal_TYPE
+               WHERE AnimalTypeName = 'Dog'
+               OR AnimalTypeName = 'Cat')
+   SET @RET = 1
+   RETURN @RET
 END;
 GO
 
 ALTER TABLE ANIMAL_TYPE
   ADD CONSTRAINT chkAnimalType
-  CHECK (dbo.OnlyCatsAndDogs(AnimalTypeName) = 0);
+  CHECK (dbo.OnlyCatsAndDogs() = 0);
 
 -- 2. Adopt-A-Pet will not accept any cats or dogs over 100 pounds
 
-CREATE FUNCTION NoLargeAnimals (@Weight VARCHAR(50))
+CREATE FUNCTION NoLargeAnimals()
 RETURNS INT
 AS
 BEGIN
-  DECLARE @RET INT
-    SET @RET = (SELECT CASE WHEN @Weight < 100
-                  THEN 0 ELSE 1 END)
-    FROM MEASUREMENTS
-    WHERE Weight = @Weight
-  RETURN @RET
+   DECLARE @RET INT = 0
+   IF EXISTS = (SELECT Weight FROM MEASUREMENTS
+               WHERE Weight < 100)
+   SET @RET = 1
+   RETURN @RET
 END;
 GO
 
-ALTER TABLE ANIMAL_TYPE
+ALTER TABLE MEASUREMENTS
   ADD CONSTRAINT chkAnimalWeight
-  CHECK (dbo.NoLargeAnimals(Weight) = 0);
+  CHECK (dbo.NoLargeAnimals() = 0);
 
 -- 3. ShipDate must come after OrderDate
 
-CREATE FUNCTION OrderBeforeShip (@OrderDate DATE, @ShipDate DATE))
+CREATE FUNCTION OrderBeforeShip()
 RETURNS INT
 AS
 BEGIN
-  DECLARE @RET INT
-    SET @RET = (SELECT CASE WHEN @OrderDate < @ShipDate
-                  THEN 0 ELSE 1 END)
-    FROM ORDER
-    WHERE OrderDate = @OrderDate
-    AND ShipDate = @ShipDate
-  RETURN @RET
+   DECLARE @RET INT = 0
+   IF EXISTS = (SELECT OrderDate, ShipDate FROM ORDER
+               WHERE @OrderDate < @ShipDate)
+   SET @RET = 1
+   RETURN @RET
 END;
 GO
 
 ALTER TABLE ORDER
   ADD CONSTRAINT chkDates
-  CHECK (dbo.OrderBeforeShip(OrderDate, ShipDate) = 0);
+  CHECK (dbo.OrderBeforeShip() = 0);
 
 --*****************COMPUTED COLUMNS*****************
