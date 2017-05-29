@@ -145,7 +145,7 @@ GO
 CREATE TABLE SUPPLIER_TYPE (
 	SupplierTypeID int IDENTITY(1,1) primary key not null,
 	SupplierTypeDesc varchar(100) null,
-	SupplierTypeName varchar(50) null,
+	SupplierTypeName varchar(50) null
 )
 GO
 

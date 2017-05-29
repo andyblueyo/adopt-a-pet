@@ -4,7 +4,7 @@
 -- 1 user-defined functions to enforce the each of business rule defined above (3 total)
 -- 3 computed columns
 
-USE AdoptAPet
+USE AdoptAPetDBO
 GO
 
 --****************INSERT STATMENTS****************
@@ -17,8 +17,47 @@ INSERT INTO MEASUREMENT (MeasurementName, MeasurementDesc) VALUES ('Weight', 'We
 INSERT INTO MEASUREMENT (MeasurementName, MeasurementDesc) VALUES ('Length', 'Length of the animal from front nose to tip of tail')
 GO
 
-INSERT INTO SUPPLIER_TYPE (
---INSERT INTO SUPPLIER_TYPE (
+INSERT INTO SUPPLIER_TYPE (SupplierTypeName, SupplierTypeDesc) VALUES ('Cat Food', 'Food for kitties') 
+INSERT INTO SUPPLIER_TYPE (SupplierTypeName, SupplierTypeDesc) VALUES ('Toiletries', 'For employee restrooms and sinks') 
+INSERT INTO SUPPLIER_TYPE (SupplierTypeName, SupplierTypeDesc) VALUES ('Dog Food', 'Food for pups') 
+INSERT INTO SUPPLIER_TYPE (SupplierTypeName, SupplierTypeDesc) VALUES ('Cleaning', 'Detergents, mops, other supplies for cleaning kennels') 
+INSERT INTO SUPPLIER_TYPE (SupplierTypeName, SupplierTypeDesc) VALUES ('Office', 'Supplies for administrative staff') 
+INSERT INTO SUPPLIER_TYPE (SupplierTypeName, SupplierTypeDesc) VALUES ('Pet Toys', 'Toys for pets')
+GO
+
+INSERT INTO EMPLOYEE_TYPE (EmployeeTypeName, EmployeeTypeDesc) VALUES ('Volunteer', 'Works a minimum of 3 hrs a week, max 10 hrs')
+INSERT INTO EMPLOYEE_TYPE (EmployeeTypeName, EmployeeTypeDesc) VALUES ('Full Time', 'Works a minimum of 40 hrs a week, max 60 hrs')
+INSERT INTO EMPLOYEE_TYPE (EmployeeTypeName, EmployeeTypeDesc) VALUES ('Part Time', 'Works a minimum of 25 hrs a week, max 38 hrs')
+GO
+
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('Vet', 'Performs medical examinations on pets')
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('Front Desk', 'Interacts with customers')
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('Janitor', 'Cleans kennels')
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('Pet care', 'Plays with pets, feeds them')
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('Shift manager', 'Manages all staff on duty at the time of their shift')
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('Admin', 'Oversees all managers, schedules shifts and orders supplies')
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('HR', 'Oversees human resource needs, distributes paychecks')
+INSERT INTO EMPLOYEE_POSITION (EmployeePositionName, EmployeePositionDesc) VALUES ('Accountant', 'Manages taxes, wages, and budgets pet costs')
+GO
+
+INSERT INTO MEDICATION_TYPE(MedicationTypeName, MedicationTypeDesc) VALUES ('Aspirin', 'For pain management')
+INSERT INTO MEDICATION_TYPE(MedicationTypeName, MedicationTypeDesc) VALUES ('Probiotics', 'For digestive issues')
+INSERT INTO MEDICATION_TYPE(MedicationTypeName, MedicationTypeDesc) VALUES ('Antibiotics', 'For bacterial infections')
+INSERT INTO MEDICATION_TYPE(MedicationTypeName, MedicationTypeDesc) VALUES ('Lice shampoo', 'To treat lice')
+INSERT INTO MEDICATION_TYPE(MedicationTypeName, MedicationTypeDesc) VALUES ('Steroids', 'To treat skin conditions')
+GO
+
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
+GO
+
+INSERT INTO ANIMAL_TYPE (AnimalTypeName, AnimalTypeDesc)VALUES ('','')
+INSERT INTO ANIMAL_TYPE (AnimalTypeName, AnimalTypeDesc)VALUES ('','')
+GO
+
 
 
 --*****************STORED PROCEDURES*****************
@@ -62,12 +101,7 @@ BEGIN
 				JOIN MEASUREMENT M
 				ON AM.MeasurementID = M.MeasurementID
 				WHERE M.MeasurementDesc = 'Weight'
-<<<<<<< bbc898fb45799d7ed7d15e3d512176e556406a68
-            AND AM.MeasurementValue < 100)
-
-=======
-                AND AM.MeasurementValue < 100)
->>>>>>> worked on computed columns
+				AND AM.MeasurementValue < 100)
    SET @RET = 1
    RETURN @RET
 END
@@ -105,16 +139,9 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT
-<<<<<<< bbc898fb45799d7ed7d15e3d512176e556406a68
    SET @RET = DateDiff(day,
                (SELECT ShipDate FROM [ORDER] WHERE ShipDate = @ShipDate),
                (SELECT OrderDate FROM [ORDER] WHERE OrderDate = @OrderDate))
-=======
-   SET @RET = (DateDiff(day ,
-               (SELECT * FROM [ORDER]
-               WHERE OrderDate = @OrderDate
-               AND ShipDate = @ShipDate) , GETDATE()))
->>>>>>> worked on computed columns
    RETURN @RET
 END
 GO
