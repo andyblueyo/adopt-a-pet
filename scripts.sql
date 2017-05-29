@@ -7,8 +7,6 @@
 USE AdoptAPet
 GO
 
-DROP DATABASE AdoptAPet
-
 --****************INSERT STATMENTS****************
 -- Insert rows into lookup tables: Measurement, Supplier_Type, Employee_Type,
 -- Employee_Position, Medication_Type, Breed, Animal_Type, ect.
@@ -44,7 +42,7 @@ BEGIN
                OR AnimalTypeName = 'Cat')
    SET @RET = 1
    RETURN @RET
-END
+END;
 GO
 
 ALTER TABLE ANIMAL_TYPE
@@ -52,6 +50,7 @@ ALTER TABLE ANIMAL_TYPE
   CHECK (dbo.OnlyCatsAndDogs() = 0);
 
 -- 2. Adopt-A-Pet will not accept any cats or dogs over 100 pounds
+
 
 CREATE FUNCTION NoLargeAnimals()
 RETURNS INT
@@ -62,7 +61,7 @@ BEGIN
 				JOIN MEASUREMENT M
 				ON AM.MeasurementID = M.MeasurementID
 				WHERE M.MeasurementDesc = 'Weight'
-                AND AM.MeasurementValue < 100)
+            AND AM.MeasurementValue < 100)
    SET @RET = 1
    RETURN @RET
 END
@@ -70,7 +69,8 @@ GO
 
 ALTER TABLE ANIMAL_MEASUREMENT
   ADD CONSTRAINT chkAnimalWeight
-  CHECK (dbo.NoLargeAnimals() = 0);
+  CHECK (dbo.NoLargeAnimals() = 0)
+  GO
 
 -- 3. ShipDate must come after OrderDate
 
@@ -98,13 +98,14 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT
-   SET @RET = (SELECT DateDiff(day ,
-               (SELECT @OrderDate, @ShipDate FROM ORDER
-               WHERE OrderDate = @OrderDate
-               AND ShipDate = @ShipDate) , GETDATE()))
+   SET @RET = DateDiff(day,
+               (SELECT ShipDate FROM [ORDER] WHERE ShipDate = @ShipDate),
+               (SELECT OrderDate FROM [ORDER] WHERE OrderDate = @OrderDate))
    RETURN @RET
 END
 GO
 
-ALTER TABLE ORDER
+ALTER TABLE [ORDER]
 ADD timeDiff AS fnShipOrderDiff(OrderDate, ShipDate)
+
+-- 2.
