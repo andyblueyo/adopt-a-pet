@@ -7,6 +7,8 @@
 USE AdoptAPet
 GO
 
+DROP DATABASE AdoptAPet
+
 --****************INSERT STATMENTS****************
 -- Insert rows into lookup tables: Measurement, Supplier_Type, Employee_Type,
 -- Employee_Position, Medication_Type, Breed, Animal_Type, ect.
@@ -42,7 +44,7 @@ BEGIN
                OR AnimalTypeName = 'Cat')
    SET @RET = 1
    RETURN @RET
-END;
+END
 GO
 
 ALTER TABLE ANIMAL_TYPE
@@ -56,14 +58,17 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT = 0
-   IF EXISTS (SELECT Weight FROM MEASUREMENTS
-               WHERE Weight < 100)
+   IF EXISTS (SELECT AM.MeasurementValue FROM ANIMAL_MEASUREMENT AM
+				JOIN MEASUREMENT M
+				ON AM.MeasurementID = M.MeasurementID
+				WHERE M.MeasurementDesc = 'Weight'
+                AND AM.MeasurementValue < 100)
    SET @RET = 1
    RETURN @RET
-END;
+END
 GO
 
-ALTER TABLE MEASUREMENTS
+ALTER TABLE ANIMAL_MEASUREMENT
   ADD CONSTRAINT chkAnimalWeight
   CHECK (dbo.NoLargeAnimals() = 0);
 
