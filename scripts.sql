@@ -45,7 +45,7 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT = 0
-   IF EXISTS = (SELECT Weight FROM MEASUREMENTS
+   IF EXISTS (SELECT Weight FROM MEASUREMENTS
                WHERE Weight < 100)
    SET @RET = 1
    RETURN @RET
@@ -63,7 +63,7 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT = 0
-   IF EXISTS = (SELECT OrderDate, ShipDate FROM ORDER
+   IF EXISTS (SELECT OrderDate, ShipDate FROM ORDER
                WHERE @OrderDate < @ShipDate)
    SET @RET = 1
    RETURN @RET
@@ -75,3 +75,20 @@ ALTER TABLE ORDER
   CHECK (dbo.OrderBeforeShip() = 0);
 
 --*****************COMPUTED COLUMNS*****************
+
+-- 1. Difference in time between OrderDate and ShipDate
+CREATE FUNCTION fnShipOrderDiff(@OrderDate DATE, @ShipDate DATE)
+RETURNS INT
+AS
+BEGIN
+   DECLARE @RET INT
+   SET @RET = (SELECT DateDiff(day ,
+               (SELECT @OrderDate, @ShipDate FROM ORDER
+               WHERE OrderDate = @OrderDate
+               AND ShipDate = @ShipDate) , GETDATE()))
+   RETURN @RET
+END
+GO
+
+ALTER TABLE ORDER
+ADD timeDiff AS fnShipOrderDiff(OrderDate, ShipDate)
