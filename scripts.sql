@@ -4,7 +4,16 @@
 -- 1 user-defined functions to enforce the each of business rule defined above (3 total)
 -- 3 computed columns
 
---*****************STORED PROCEDUES*****************
+--****************INSERT STATMENTS****************
+-- Insert 8 to 10 rows into lookup tables: Measurement, Supplier_Type, Employee_Type, 
+-- Employee_Position, Medication_Type, Breed, Animal_Type, ect.
+
+
+
+--*****************STORED PROCEDURES*****************
+-- Create stored procecures for associative entities : Animal_Medication, Animal_Measurement, Store_Supplier
+-- Also create procudures for Order, Animal, and Employee
+
 
 
 
