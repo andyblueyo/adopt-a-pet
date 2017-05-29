@@ -47,15 +47,15 @@ INSERT INTO MEDICATION_TYPE(MedicationTypeName, MedicationTypeDesc) VALUES ('Lic
 INSERT INTO MEDICATION_TYPE(MedicationTypeName, MedicationTypeDesc) VALUES ('Steroids', 'To treat skin conditions')
 GO
 
-INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
-INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
-INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
-INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
-INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('', '', '')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('Australian Sheperd', 'Spotted, fluffy and cute', 'Pure bred')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('Mutt', 'a combo package', 'mixed')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('Dalmation', 'Black and white, spotted, short hair, cute', 'Pure bred')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('Persian', 'Fluffy as hell, light colored, blue eyes', 'Mixed')
+INSERT INTO BREED (BreedName, BreedDesc, Pedigree) VALUES ('Sphynx', 'Naked kitty', 'Pure bred')
 GO
 
-INSERT INTO ANIMAL_TYPE (AnimalTypeName, AnimalTypeDesc)VALUES ('','')
-INSERT INTO ANIMAL_TYPE (AnimalTypeName, AnimalTypeDesc)VALUES ('','')
+INSERT INTO ANIMAL_TYPE (AnimalTypeName, AnimalTypeDesc)VALUES ('Cat','a feline pet')
+INSERT INTO ANIMAL_TYPE (AnimalTypeName, AnimalTypeDesc)VALUES ('Dog','a canine pet')
 GO
 
 
@@ -71,14 +71,20 @@ GO
 
 -- 1. Adopt-A-Pet will only accept cats and dogs, no other animals
 
+alter table ANIMAL_TYPE
+drop constraint chkAnimalType
+
+drop function OnlyCatsAndDogs
+
+
 CREATE FUNCTION OnlyCatsAndDogs()
 RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT = 0
-   IF EXISTS (SELECT AnimalTypeName FROM Animal_TYPE
-               WHERE AnimalTypeName = 'Dog'
-               OR AnimalTypeName = 'Cat')
+   IF EXISTS (SELECT AnimalTypeName FROM ANIMAL_TYPE
+               WHERE AnimalTypeName <> 'Dog'
+               OR AnimalTypeName <> 'Cat')
    SET @RET = 1
    RETURN @RET
 END;
