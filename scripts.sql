@@ -63,7 +63,6 @@ BEGIN
 				ON AM.MeasurementID = M.MeasurementID
 				WHERE M.MeasurementDesc = 'Weight'
             AND AM.MeasurementValue < 100)
-
    SET @RET = 1
    RETURN @RET
 END
@@ -111,4 +110,33 @@ GO
 ALTER TABLE [ORDER]
 ADD timeDiff AS fnShipOrderDiff(OrderDate, ShipDate)
 
--- 2.
+-- 2. Breed Short Name Code
+
+CREATE FUNCTION fnBreedShortName(@BreedName)
+RETURNS VARCHAR(4)
+AS
+BEGIN
+   DECLARE @RET VARCHAR(4)
+   SET @RET = SUBSTRING(SELECT BreedName FROM BREED WHERE @BreedName = BreedName
+                        1, 4)
+   RETURN @RET
+END
+GO
+
+ALTER TABLE [ORDER]
+ADD shortName AS fnBreedShortName(BreedName)
+
+-- 3. Animal Age
+
+CREATE FUNCTION fnCalcAnimalAge(@AnimalDOB)
+RETURNS INT
+AS
+BEGIN
+   DECLARE @RET INT
+   SET @RET = SELECT DATEDIFF(year, @AnimalDOB, GetDate())
+   RETURN @RET
+END
+GO
+
+ALTER TABLE ANIMAL
+ADD animalAge AS fnCalcAnimalAge(AnimalDOB)
