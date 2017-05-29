@@ -17,8 +17,8 @@ INSERT INTO MEASUREMENT (MeasurementName, MeasurementDesc) VALUES ('Weight', 'We
 INSERT INTO MEASUREMENT (MeasurementName, MeasurementDesc) VALUES ('Length', 'Length of the animal from front nose to tip of tail')
 GO
 
---Inserts into Supplier_Type
 INSERT INTO SUPPLIER_TYPE (
+--INSERT INTO SUPPLIER_TYPE (
 
 
 --*****************STORED PROCEDURES*****************
@@ -47,7 +47,8 @@ GO
 
 ALTER TABLE ANIMAL_TYPE
   ADD CONSTRAINT chkAnimalType
-  CHECK (dbo.OnlyCatsAndDogs() = 0);
+  CHECK (dbo.OnlyCatsAndDogs() = 0)
+GO
 
 -- 2. Adopt-A-Pet will not accept any cats or dogs over 100 pounds
 
@@ -57,11 +58,20 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT = 0
+<<<<<<< 9d8208b740d3153eb6e8e024019e8cfcba92ad62
    IF EXISTS (SELECT AM.MeasurementValue FROM ANIMAL_MEASUREMENT AM
 				JOIN MEASUREMENT M
 				ON AM.MeasurementID = M.MeasurementID
 				WHERE M.MeasurementDesc = 'Weight'
+<<<<<<< HEAD
             AND AM.MeasurementValue < 100)
+=======
+                AND AM.MeasurementValue < 100)
+=======
+   IF EXISTS (SELECT Weight FROM MEASUREMENT
+               WHERE Weight < 100)
+>>>>>>> created AdoptAPetDBO
+>>>>>>> 55a62b84b153456ee4510b8e01621126959b6a94
    SET @RET = 1
    RETURN @RET
 END
@@ -79,16 +89,17 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT = 0
-   IF EXISTS (SELECT OrderDate, ShipDate FROM ORDER
-               WHERE @OrderDate < @ShipDate)
+   IF EXISTS (SELECT OrderDate, ShipDate FROM [ORDER]
+               WHERE OrderDate < ShipDate)
    SET @RET = 1
    RETURN @RET
-END;
+END
 GO
 
-ALTER TABLE ORDER
+ALTER TABLE [ORDER]
   ADD CONSTRAINT chkDates
   CHECK (dbo.OrderBeforeShip() = 0);
+GO
 
 --*****************COMPUTED COLUMNS*****************
 
