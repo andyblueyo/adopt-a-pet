@@ -8,7 +8,7 @@ USE AdoptAPet
 GO
 
 --****************INSERT STATMENTS****************
--- Insert rows into lookup tables: Measurement, Supplier_Type, Employee_Type, 
+-- Insert rows into lookup tables: Measurement, Supplier_Type, Employee_Type,
 -- Employee_Position, Medication_Type, Breed, Animal_Type, ect.
 
 -- Inserts into Measurement
