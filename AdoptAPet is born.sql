@@ -1,6 +1,6 @@
 
-CREATE DATABASE AdoptAPet
-GO
+--CREATE DATABASE AdoptAPet
+--GO
 
 USE AdoptAPet
 GO
@@ -66,7 +66,8 @@ CREATE TABLE [ORDER] (
 	CustomerID int not null,
 	OrderDesc varchar(100) null,
 	OrderName varchar(50) not null,
-	ShipDate date null
+	ShipDate date null,
+	OrderDate date null
 )
 GO
 
@@ -270,6 +271,4 @@ ADD CONSTRAINT FK_SUPPLIER_SupplierTypeID
 FOREIGN KEY (SupplierTypeID)
 REFERENCES SUPPLIER_TYPE (SupplierTypeID)
 GO
-
-
 
