@@ -2,6 +2,9 @@
 --CREATE DATABASE AdoptAPet
 --GO
 
+DROP DATABASE AdoptAPet
+GO
+
 USE AdoptAPet
 GO 
 
@@ -163,6 +166,7 @@ CREATE TABLE ANIMAL_MEASUREMENT (
 	AnimalID int not null,
 	MeasurementID int not null,
 	[Date] date null,
+	MeasurementValue int null,
 )
 GO
 
