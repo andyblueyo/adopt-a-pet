@@ -62,8 +62,12 @@ BEGIN
 				JOIN MEASUREMENT M
 				ON AM.MeasurementID = M.MeasurementID
 				WHERE M.MeasurementDesc = 'Weight'
+<<<<<<< bbc898fb45799d7ed7d15e3d512176e556406a68
             AND AM.MeasurementValue < 100)
 
+=======
+                AND AM.MeasurementValue < 100)
+>>>>>>> worked on computed columns
    SET @RET = 1
    RETURN @RET
 END
@@ -101,9 +105,16 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT
+<<<<<<< bbc898fb45799d7ed7d15e3d512176e556406a68
    SET @RET = DateDiff(day,
                (SELECT ShipDate FROM [ORDER] WHERE ShipDate = @ShipDate),
                (SELECT OrderDate FROM [ORDER] WHERE OrderDate = @OrderDate))
+=======
+   SET @RET = (DateDiff(day ,
+               (SELECT * FROM [ORDER]
+               WHERE OrderDate = @OrderDate
+               AND ShipDate = @ShipDate) , GETDATE()))
+>>>>>>> worked on computed columns
    RETURN @RET
 END
 GO
