@@ -58,20 +58,12 @@ RETURNS INT
 AS
 BEGIN
    DECLARE @RET INT = 0
-<<<<<<< 9d8208b740d3153eb6e8e024019e8cfcba92ad62
    IF EXISTS (SELECT AM.MeasurementValue FROM ANIMAL_MEASUREMENT AM
 				JOIN MEASUREMENT M
 				ON AM.MeasurementID = M.MeasurementID
 				WHERE M.MeasurementDesc = 'Weight'
-<<<<<<< HEAD
             AND AM.MeasurementValue < 100)
-=======
-                AND AM.MeasurementValue < 100)
-=======
-   IF EXISTS (SELECT Weight FROM MEASUREMENT
-               WHERE Weight < 100)
->>>>>>> created AdoptAPetDBO
->>>>>>> 55a62b84b153456ee4510b8e01621126959b6a94
+
    SET @RET = 1
    RETURN @RET
 END
