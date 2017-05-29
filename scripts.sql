@@ -20,9 +20,7 @@ BEGIN
     SET @RET = (SELECT CASE WHEN @AnimalTypeName = 'Dog'
                   OR @AnimalTypeName = 'Cat'
                   THEN 0 ELSE 1 END)
-    FROM ANIMAL A
-    JOIN ANIMAL_TYPE AT
-    ON A.AnimalTypeID = AT.AnimalTypeID
+    FROM ANIMAL_TYPE
     WHERE AnimalTypeName = @AnimalTypeName
   RETURN @RET
 END;
