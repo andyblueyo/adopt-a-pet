@@ -2,6 +2,7 @@
 -- 6 stored procedures to populate transactional tables
 -- 3 definition of a business rule
 -- 1 user-defined functions to enforce the each of business rule defined above (3 total)
+-- 3 computed columns
 
 --*****************STORED PROCEDUES*****************
 
@@ -11,22 +12,29 @@
 
 -- 1. Adopt-A-Pet will only accept cats and dogs, no other animals
 
-CREATE FUNCTION CheckPageNumbers (@pages int, @capacity int)
-RETURNS int
+CREATE FUNCTION OnlyCatsAndDogs (@AnimalTypeName VARCHAR(50))
+RETURNS INT
 AS
 BEGIN
-  DECLARE @retval int
-    SET @retval = (SELECT CASE WHEN pages < @capacity THEN 0 ELSE 1 END)
-    FROM BOOK
-    WHERE pages = @pages
-  RETURN @retval
+  DECLARE @RET INT
+    SET @RET = (SELECT CASE WHEN @AnimalTypeName = 'Dog'
+                  OR @AnimalTypeName = 'Cat'
+                  THEN 0 ELSE 1 END)
+    FROM ANIMAL A
+    JOIN ANIMAL_TYPE AT
+    ON A.AnimalTypeID = AT.AnimalTypeID
+    WHERE AnimalTypeName = @AnimalTypeName
+  RETURN @RET
 END;
 GO
 
-ALTER TABLE Book
-  ADD CONSTRAINT chkPageNumbers
-  CHECK (dbo.CheckPageNumbers(pages, 300) = 0);
+ALTER TABLE ANIMAL_TYPE
+  ADD CONSTRAINT chkAnimalType
+  CHECK (dbo.OnlyCatsAndDogs(AnimalTypeName) = 0);
 
 -- 2. Adopt-A-Pet will not accept any cats or dogs over 100 pounds
 
 -- 3. ShipDate must come after OrderDate
+
+
+--*****************COMPUTED COLUMNS*****************
